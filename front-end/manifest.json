@@ -1,0 +1,65 @@
+{
+  "name": "간단한 쇼핑몰",
+  "short_name": "쇼핑몰",
+  "description": "백엔드 개발자를 위한 완전한 쇼핑몰 프론트엔드",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "ecommerce"],
+  "lang": "ko",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/1280x720?text=Desktop+View",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Desktop 화면"
+    },
+    {
+      "src": "https://via.placeholder.com/750x1334?text=Mobile+View",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "모바일 화면"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "상품 검색",
+      "short_name": "검색",
+      "description": "원하는 상품을 찾아보세요",
+      "url": "/?action=search",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "장바구니",
+      "short_name": "장바구니",
+      "description": "장바구니 확인하기",
+      "url": "/?action=cart",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": []
+}

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>백엔드 서버 연결 상태 체크</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .health-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .health-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+        }
+
+        .server-info {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .server-url {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-online .status-dot {
+            background: #48bb78;
+            box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+        }
+
+        .status-offline .status-dot {
+            background: #f56565;
+            box-shadow: 0 0 0 0 rgba(245, 101, 101, 0.7);
+            animation: none;
+        }
+
+        .status-checking .status-dot {
+            background: #ed8936;
+            box-shadow: 0 0 0 0 rgba(237, 137, 54, 0.7);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
+            }
+        }
+
+        .check-button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0.5rem;
+        }
+
+        .check-button:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+        }
+
+        .check-button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response-info {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 6px;
+            text-align: left;
+        }
+
+        .response-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .response-data {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .last-checked {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 1rem;
+        }
+
+        .shopping-mall-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: #38a169;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .shopping-mall-link:hover {
+            background: #2f855a;
+        }
+
+        .auto-refresh {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .auto-refresh input[type="checkbox"] {
+            accent-color: #4299e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="health-container">
+        <h1 class="health-title">🩺 백엔드 서버 상태 체크</h1>
+        
+        <div class="server-info">
+            <div class="server-url" id="server-url">localhost:8080</div>
+        </div>
+
+        <div id="status-indicator" class="status-indicator status-checking">
+            <span class="status-dot"></span>
+            <span id="status-text">연결 확인 중...</span>
+        </div>
+
+        <div>
+            <button id="check-button" class="check-button">연결 확인</button>
+            <button id="check-all-button" class="check-button">전체 API 확인</button>
+        </div>
+
+        <div class="auto-refresh">
+            <input type="checkbox" id="auto-refresh" checked>
+            <label for="auto-refresh">자동 새로고침 (30초)</label>
+        </div>
+
+        <div id="response-info" class="response-info" style="display: none;">
+            <div class="response-title">응답 정보</div>
+            <div id="response-data" class="response-data"></div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+        </div>
+
+        <div id="last-checked" class="last-checked"></div>
+
+        <a href="index.html" class="shopping-mall-link">🛒 쇼핑몰로 이동</a>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8080';
+        
+        let autoRefreshInterval;
+        let isChecking = false;
+
+        const elements = {
+            serverUrl: document.getElementById('server-url'),
+            statusIndicator: document.getElementById('status-indicator'),
+            statusText: document.getElementById('status-text'),
+            checkButton: document.getElementById('check-button'),
+            checkAllButton: document.getElementById('check-all-button'),
+            autoRefresh: document.getElementById('auto-refresh'),
+            responseInfo: document.getElementById('response-info'),
+            responseData: document.getElementById('response-data'),
+            errorMessage: document.getElementById('error-message'),
+            lastChecked: document.getElementById('last-checked')
+        };
+
+        // 상태 업데이트 함수
+        function updateStatus(status, message, data = null, error = null) {
+            elements.statusIndicator.className = `status-indicator status-${status}`;
+            elements.statusText.textContent = message;
+            elements.lastChecked.textContent = `마지막 확인: ${new Date().toLocaleString()}`;
+            
+            if (data || error) {
+                elements.responseInfo.style.display = 'block';
+                
+                if (data) {
+                    elements.responseData.textContent = JSON.stringify(data, null, 2);
+                    elements.errorMessage.style.display = 'none';
+                } else if (error) {
+                    elements.responseData.textContent = error.toString();
+                    elements.errorMessage.textContent = error.message || '연결 오류가 발생했습니다.';
+                    elements.errorMessage.style.display = 'block';
+                }
+            } else {
+                elements.responseInfo.style.display = 'none';
+            }
+        }
+
+        // 서버 헬스체크
+        async function checkServerHealth() {
+            if (isChecking) return;
+            
+            isChecking = true;
+            elements.checkButton.disabled = true;
+            elements.checkAllButton.disabled = true;
+            
+            updateStatus('checking', '연결 확인 중...');
+
+            try {
+                const startTime = performance.now();
+                
+                const response = await fetch(`${API_BASE_URL}/api/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/plain'
+                    },
+                    signal: AbortSignal.timeout(10000) // 10초 타임아웃
+                });
+
+                const endTime = performance.now();
+                const responseTime = Math.round(endTime - startTime);
+
+                if (response.ok) {
+                    const text = await response.text();
+                    if (text === "1") {
+                        updateStatus('online', `서버 연결 성공 (${responseTime}ms)`, {
+                            status: 'healthy',
+                            responseTime: `${responseTime}ms`,
+                            timestamp: new Date().toISOString(),
+                            message: text
+                        });
+                    } else {
+                        throw new Error(`Unexpected response: ${text}`);
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+            } catch (error) {
+                console.error('서버 연결 실패:', error);
+                
+                let errorMessage = '서버에 연결할 수 없습니다';
+                if (error.name === 'AbortError') {
+                    errorMessage = '연결 시간이 초과되었습니다 (10초)';
+                } else if (error.message.includes('fetch')) {
+                    errorMessage = '네트워크 연결을 확인해주세요';
+                }
+                
+                updateStatus('offline', errorMessage, null, error);
+            } finally {
+                isChecking = false;
+                elements.checkButton.disabled = false;
+                elements.checkAllButton.disabled = false;
+            }
+        }
+
+        // 전체 API 엔드포인트 확인
+        async function checkAllAPIs() {
+            if (isChecking) return;
+            
+            isChecking = true;
+            elements.checkButton.disabled = true;
+            elements.checkAllButton.disabled = true;
+            
+            updateStatus('checking', '전체 API 확인 중...');
+
+            const endpoints = [
+                { name: 'Health Check', url: '/api/health', method: 'GET' },
+                { name: 'Products', url: '/api/products', method: 'GET' },
+                { name: 'Categories', url: '/api/categories', method: 'GET' },
+                { name: 'Cart', url: '/api/cart', method: 'GET' }
+            ];
+
+            const results = {};
+            let successCount = 0;
+
+            for (const endpoint of endpoints) {
+                try {
+                    const startTime = performance.now();
+                    const response = await fetch(`${API_BASE_URL}${endpoint.url}`, {
+                        method: endpoint.method,
+                        headers: { 
+                            'Accept': endpoint.url === '/api/health' ? 'text/plain' : 'application/json' 
+                        },
+                        signal: AbortSignal.timeout(5000)
+                    });
+                    const endTime = performance.now();
+                    
+                    results[endpoint.name] = {
+                        status: response.ok ? 'success' : 'error',
+                        responseTime: `${Math.round(endTime - startTime)}ms`,
+                        statusCode: response.status,
+                        url: endpoint.url
+                    };
+                    
+                    if (response.ok) successCount++;
+                    
+                } catch (error) {
+                    results[endpoint.name] = {
+                        status: 'error',
+                        error: error.message,
+                        url: endpoint.url
+                    };
+                }
+            }
+
+            const allSuccess = successCount === endpoints.length;
+            updateStatus(
+                allSuccess ? 'online' : 'offline',
+                `API 확인 완료: ${successCount}/${endpoints.length} 성공`,
+                results
+            );
+
+            isChecking = false;
+            elements.checkButton.disabled = false;
+            elements.checkAllButton.disabled = false;
+        }
+
+        // 자동 새로고침 관리
+        function setupAutoRefresh() {
+            if (elements.autoRefresh.checked) {
+                autoRefreshInterval = setInterval(checkServerHealth, 30000);
+            } else {
+                if (autoRefreshInterval) {
+                    clearInterval(autoRefreshInterval);
+                    autoRefreshInterval = null;
+                }
+            }
+        }
+
+        // 이벤트 리스너 설정
+        elements.checkButton.addEventListener('click', checkServerHealth);
+        elements.checkAllButton.addEventListener('click', checkAllAPIs);
+        elements.autoRefresh.addEventListener('change', setupAutoRefresh);
+
+        // 서버 URL 표시
+        elements.serverUrl.textContent = API_BASE_URL;
+
+        // 페이지 로드 시 초기 체크
+        window.addEventListener('load', () => {
+            checkServerHealth();
+            setupAutoRefresh();
+        });
+
+        // 페이지 언로드 시 정리
+        window.addEventListener('beforeunload', () => {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>

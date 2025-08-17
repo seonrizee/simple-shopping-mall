@@ -1,0 +1,392 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "MacBook Pro 14인치",
+      "price": 2590000,
+      "category": "electronics",
+      "description": "Apple M3 Pro 칩이 탑재된 강력한 노트북으로 전문가급 성능을 제공합니다.",
+      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop",
+      "rating": 4.8,
+      "reviewCount": 324,
+      "inStock": true,
+      "tags": ["laptop", "apple", "professional", "m3"],
+      "specs": {
+        "processor": "Apple M3 Pro",
+        "memory": "16GB",
+        "storage": "512GB SSD",
+        "display": "14.2인치 Liquid Retina XDR"
+      }
+    },
+    {
+      "id": 2,
+      "name": "아이폰 15 Pro",
+      "price": 1350000,
+      "category": "electronics",
+      "description": "티타늄 디자인과 A17 Pro 칩의 만남, 프로급 카메라 시스템이 특징입니다.",
+      "image": "https://images.unsplash.com/photo-1592286258640-d9e2f5f4c0e4?w=400&h=400&fit=crop",
+      "rating": 4.7,
+      "reviewCount": 892,
+      "inStock": true,
+      "tags": ["smartphone", "apple", "camera", "titanium"],
+      "specs": {
+        "processor": "A17 Pro",
+        "storage": "128GB",
+        "camera": "48MP 메인 + 12MP 울트라와이드",
+        "display": "6.1인치 Super Retina XDR"
+      }
+    },
+    {
+      "id": 3,
+      "name": "캐시미어 코트",
+      "price": 289000,
+      "category": "clothing",
+      "description": "100% 캐시미어 소재로 제작된 고급스러운 겨울 코트입니다.",
+      "image": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&h=400&fit=crop",
+      "rating": 4.6,
+      "reviewCount": 156,
+      "inStock": true,
+      "tags": ["coat", "cashmere", "winter", "luxury"],
+      "specs": {
+        "material": "100% 캐시미어",
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["베이지", "네이비", "그레이"],
+        "care": "드라이클리닝 전용"
+      }
+    },
+    {
+      "id": 4,
+      "name": "프리미엄 스니커즈",
+      "price": 159000,
+      "category": "clothing",
+      "description": "편안함과 스타일을 동시에 만족하는 프리미엄 운동화입니다.",
+      "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop",
+      "rating": 4.5,
+      "reviewCount": 423,
+      "inStock": true,
+      "tags": ["sneakers", "comfortable", "casual", "premium"],
+      "specs": {
+        "material": "프리미엄 레더 + 메시",
+        "sizes": ["240", "250", "260", "270", "280"],
+        "colors": ["화이트", "블랙", "그레이"],
+        "sole": "에어 쿠션 솔"
+      }
+    },
+    {
+      "id": 5,
+      "name": "JavaScript 완벽 가이드",
+      "price": 45000,
+      "category": "books",
+      "description": "최신 ES2023까지 다루는 모던 JavaScript 개발의 바이블입니다.",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop",
+      "rating": 4.9,
+      "reviewCount": 234,
+      "inStock": true,
+      "tags": ["javascript", "programming", "web development", "es2023"],
+      "specs": {
+        "pages": "1200페이지",
+        "language": "한국어",
+        "publisher": "한빛미디어",
+        "isbn": "978-89-7914-xxx-x"
+      }
+    },
+    {
+      "id": 6,
+      "name": "프리미엄 커피 머신",
+      "price": 450000,
+      "category": "home",
+      "description": "바리스타 급 에스프레소를 집에서 즐길 수 있는 전자동 커피머신입니다.",
+      "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop",
+      "rating": 4.4,
+      "reviewCount": 167,
+      "inStock": true,
+      "tags": ["coffee", "espresso", "automatic", "kitchen"],
+      "specs": {
+        "capacity": "1.8L 물통",
+        "pressure": "15바 펌프 압력",
+        "features": ["원터치 제조", "우유 거품기", "자동 세척"],
+        "warranty": "2년 AS"
+      }
+    },
+    {
+      "id": 7,
+      "name": "무선 노이즈 캔슬링 헤드폰",
+      "price": 320000,
+      "category": "electronics",
+      "description": "프리미엄 노이즈 캔슬링 기능과 최고급 음질을 제공하는 헤드폰입니다.",
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+      "rating": 4.7,
+      "reviewCount": 589,
+      "inStock": true,
+      "tags": ["headphones", "wireless", "noise-canceling", "premium"],
+      "specs": {
+        "connectivity": "블루투스 5.3",
+        "battery": "30시간 재생",
+        "features": ["액티브 노이즈 캔슬링", "터치 컨트롤", "음성 어시스턴트"],
+        "weight": "250g"
+      }
+    },
+    {
+      "id": 8,
+      "name": "오가닉 코튼 티셔츠",
+      "price": 35000,
+      "category": "clothing",
+      "description": "100% 오가닉 코튼으로 만든 부드럽고 편안한 기본 티셔츠입니다.",
+      "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+      "rating": 4.3,
+      "reviewCount": 298,
+      "inStock": true,
+      "tags": ["tshirt", "organic", "cotton", "basic"],
+      "specs": {
+        "material": "100% 오가닉 코튼",
+        "sizes": ["XS", "S", "M", "L", "XL", "XXL"],
+        "colors": ["화이트", "블랙", "그레이", "네이비", "베이지"],
+        "fit": "레귤러 핏"
+      }
+    },
+    {
+      "id": 9,
+      "name": "React 실전 완주 가이드",
+      "price": 38000,
+      "category": "books",
+      "description": "React 18의 최신 기능부터 실무 프로젝트까지 완벽 마스터하는 책입니다.",
+      "image": "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=400&fit=crop",
+      "rating": 4.8,
+      "reviewCount": 445,
+      "inStock": true,
+      "tags": ["react", "javascript", "frontend", "web development"],
+      "specs": {
+        "pages": "856페이지",
+        "language": "한국어",
+        "publisher": "길벗",
+        "includes": ["실습 파일", "온라인 강의 쿠폰"]
+      }
+    },
+    {
+      "id": 10,
+      "name": "아로마 소이 캔들 세트",
+      "price": 45000,
+      "category": "home",
+      "description": "천연 소이왁스와 에센셜 오일로 만든 프리미엄 아로마 캔들 3개 세트입니다.",
+      "image": "https://static.zarahome.net/assets/public/f6aa/8c56/3658418eb46c/71fc8e454615/45458705603-a7/45458705603-a7.jpg?ts=1720532425587&f=auto&w=1082",
+      "rating": 4.6,
+      "reviewCount": 78,
+      "inStock": true,
+      "tags": ["candle", "aroma", "soy wax", "essential oil"],
+      "specs": {
+        "quantity": "3개 세트",
+        "scents": ["라벤더", "유칼립투스", "바닐라"],
+        "burn_time": "각 45시간",
+        "material": "100% 천연 소이왁스"
+      }
+    },
+    {
+      "id": 11,
+      "name": "게이밍 기계식 키보드",
+      "price": 180000,
+      "category": "electronics",
+      "description": "RGB 백라이트와 기계식 스위치를 탑재한 프로게이머용 키보드입니다.",
+      "image": "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=400&fit=crop",
+      "rating": 4.5,
+      "reviewCount": 367,
+      "inStock": true,
+      "tags": ["keyboard", "gaming", "mechanical", "rgb"],
+      "specs": {
+        "switches": "체리 MX 청축",
+        "layout": "텐키리스",
+        "features": ["RGB 백라이트", "매크로 지원", "USB-C 연결"],
+        "compatibility": ["Windows", "macOS", "Linux"]
+      }
+    },
+    {
+      "id": 12,
+      "name": "빈티지 데님 재킷",
+      "price": 89000,
+      "category": "clothing",
+      "description": "클래식한 빈티지 워싱 처리가 돋보이는 프리미엄 데님 재킷입니다.",
+      "image": "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=400&h=400&fit=crop",
+      "rating": 4.4,
+      "reviewCount": 201,
+      "inStock": true,
+      "tags": ["denim", "jacket", "vintage", "classic"],
+      "specs": {
+        "material": "100% 코튼 데님",
+        "wash": "빈티지 스톤 워싱",
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["인디고", "라이트 블루", "다크 블루"]
+      }
+    },
+    {
+      "id": 13,
+      "name": "Node.js 백엔드 개발의 정석",
+      "price": 42000,
+      "category": "books",
+      "description": "실무에 바로 적용할 수 있는 Node.js 서버 개발 완전 가이드입니다.",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "rating": 4.7,
+      "reviewCount": 312,
+      "inStock": true,
+      "tags": ["nodejs", "backend", "server", "javascript"],
+      "specs": {
+        "pages": "720페이지",
+        "language": "한국어",
+        "publisher": "위키북스",
+        "level": "중급~고급"
+      }
+    },
+    {
+      "id": 14,
+      "name": "스마트 공기청정기",
+      "price": 350000,
+      "category": "home",
+      "description": "HEPA 필터와 IoT 기능을 탑재한 차세대 스마트 공기청정기입니다.",
+      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+      "rating": 4.3,
+      "reviewCount": 134,
+      "inStock": true,
+      "tags": ["air purifier", "smart", "hepa", "iot"],
+      "specs": {
+        "coverage": "35평형",
+        "filters": ["HEPA", "활성탄", "프리필터"],
+        "features": ["앱 연동", "음성 제어", "자동 모드"],
+        "noise_level": "최대 45dB"
+      }
+    },
+    {
+      "id": 15,
+      "name": "프리미엄 스마트워치",
+      "price": 420000,
+      "category": "electronics",
+      "description": "건강 관리와 편의 기능이 집약된 차세대 스마트워치입니다.",
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+      "rating": 4.6,
+      "reviewCount": 756,
+      "inStock": true,
+      "tags": ["smartwatch", "fitness", "health", "premium"],
+      "specs": {
+        "display": "1.9인치 AMOLED",
+        "battery": "7일 사용",
+        "features": ["심박수 측정", "GPS", "수면 분석", "NFC 결제"],
+        "water_resistance": "5ATM + IP68"
+      }
+    },
+    {
+      "id": 16,
+      "name": "울 블렌드 니트",
+      "price": 95000,
+      "category": "clothing",
+      "description": "메리노울과 캐시미어가 블렌딩된 부드러운 겨울 니트입니다.",
+      "image": "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=400&h=400&fit=crop",
+      "rating": 4.8,
+      "reviewCount": 89,
+      "inStock": true,
+      "tags": ["knit", "wool", "cashmere", "winter"],
+      "specs": {
+        "material": "메리노울 70% + 캐시미어 30%",
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["크림", "네이비", "그레이", "카멜"],
+        "care": "찬물 손세탁 또는 드라이클리닝"
+      }
+    },
+    {
+      "id": 17,
+      "name": "TypeScript 마스터북",
+      "price": 48000,
+      "category": "books",
+      "description": "타입스크립트의 기초부터 고급 패턴까지 마스터하는 완전 가이드입니다.",
+      "image": "https://images.unsplash.com/photo-1515378791036-0648a814c963?w=400&h=400&fit=crop",
+      "rating": 4.9,
+      "reviewCount": 278,
+      "inStock": true,
+      "tags": ["typescript", "javascript", "programming", "types"],
+      "specs": {
+        "pages": "680페이지",
+        "language": "한국어",
+        "publisher": "인사이트",
+        "includes": ["예제 코드", "실습 프로젝트"]
+      }
+    },
+    {
+      "id": 18,
+      "name": "무선 충전 패드",
+      "price": 65000,
+      "category": "electronics",
+      "description": "Qi 규격 지원, 빠른 무선 충전이 가능한 프리미엄 충전 패드입니다.",
+      "image": "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=400&h=400&fit=crop",
+      "rating": 4.2,
+      "reviewCount": 445,
+      "inStock": true,
+      "tags": ["wireless charger", "qi", "fast charging", "smartphone"],
+      "specs": {
+        "output": "15W 고속 충전",
+        "compatibility": ["iPhone", "Galaxy", "Qi 지원 기기"],
+        "features": ["LED 표시등", "과열 방지", "이물질 감지"],
+        "cable": "USB-C 케이블 포함"
+      }
+    },
+    {
+      "id": 19,
+      "name": "천연 대나무 도마 세트",
+      "price": 35000,
+      "category": "home",
+      "description": "항균성이 뛰어난 천연 대나무로 만든 친환경 도마 3종 세트입니다.",
+      "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
+      "rating": 4.5,
+      "reviewCount": 167,
+      "inStock": true,
+      "tags": ["cutting board", "bamboo", "eco-friendly", "kitchen"],
+      "specs": {
+        "material": "100% 천연 대나무",
+        "quantity": "3종 세트 (대/중/소)",
+        "sizes": ["35×25cm", "30×20cm", "25×15cm"],
+        "features": ["항균 처리", "손잡이", "논슬립 패드"]
+      }
+    },
+    {
+      "id": 20,
+      "name": "프리미엄 레더 지갑",
+      "price": 125000,
+      "category": "clothing",
+      "description": "이탈리아 천연 가죽으로 제작된 수작업 프리미엄 지갑입니다.",
+      "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop",
+      "rating": 4.7,
+      "reviewCount": 203,
+      "inStock": true,
+      "tags": ["wallet", "leather", "handmade", "premium"],
+      "specs": {
+        "material": "이탈리아 천연 가죽",
+        "compartments": ["카드 슬롯 12개", "지폐칸 2개", "동전 포켓"],
+        "colors": ["블랙", "브라운", "네이비"],
+        "dimensions": "11cm × 9cm × 2cm"
+      }
+    }
+  ],
+  "categories": [
+    {
+      "id": "electronics",
+      "name": "전자제품",
+      "description": "최신 전자기기 및 IT 제품"
+    },
+    {
+      "id": "clothing",
+      "name": "의류",
+      "description": "패션 의류 및 액세서리"
+    },
+    {
+      "id": "books",
+      "name": "도서",
+      "description": "프로그래밍 및 기술 서적"
+    },
+    {
+      "id": "home",
+      "name": "생활용품",
+      "description": "홈 & 리빙 용품"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-15",
+    "totalProducts": 20,
+    "currency": "KRW"
+  }
+}

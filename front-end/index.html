@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="간단한 온라인 쇼핑몰 - 다양한 상품을 쉽고 빠르게 구매하세요">
+    <title>간단한 쇼핑몰</title>
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="styles/main.css" as="style">
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+</head>
+<body>
+    <!-- 접근성: 스킵 링크 -->
+    <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+    
+    <!-- 로딩 화면 -->
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p>상품을 불러오는 중...</p>
+    </div>
+    
+    <!-- 헤더 -->
+    <header class="site-header" role="banner">
+        <nav class="main-nav" role="navigation" aria-label="주요 내비게이션">
+            <div class="nav-brand">
+                <h1><a href="/" aria-label="쇼핑몰 홈페이지로 이동">🛒 쇼핑몰</a></h1>
+            </div>
+            
+            <div class="nav-search">
+                <form role="search" class="search-form">
+                    <label for="search-input" class="sr-only">상품 검색</label>
+                    <input 
+                        type="search" 
+                        id="search-input"
+                        placeholder="상품을 검색해보세요..." 
+                        aria-label="상품 검색"
+                        autocomplete="off"
+                    >
+                    <button type="submit" aria-label="검색 실행">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                    </button>
+                </form>
+                
+                <!-- 검색 제안 드롭다운 -->
+                <div class="search-suggestions" role="listbox" aria-hidden="true">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <button 
+                    class="cart-toggle" 
+                    aria-label="장바구니 열기" 
+                    aria-expanded="false" 
+                    aria-controls="shopping-cart"
+                    aria-describedby="cart-count"
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    <span id="cart-count" class="cart-count" aria-live="polite">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main id="main-content" role="main">
+        <!-- 필터 사이드바 -->
+        <aside class="filters-sidebar" role="search" aria-labelledby="filters-heading">
+            <div class="filters-header">
+                <h2 id="filters-heading">상품 필터</h2>
+                <button class="filters-toggle" aria-label="필터 토글" aria-expanded="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="filters-content">
+                <!-- 카테고리 필터 -->
+                <div class="filter-group">
+                    <h3 class="filter-title">카테고리</h3>
+                    <div class="filter-options" role="group" aria-labelledby="category-filter">
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="" checked>
+                            <span>전체</span>
+                            <span class="count">(0)</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="electronics">
+                            <span>전자제품</span>
+                            <span class="count">(0)</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="clothing">
+                            <span>의류</span>
+                            <span class="count">(0)</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="books">
+                            <span>도서</span>
+                            <span class="count">(0)</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="home">
+                            <span>생활용품</span>
+                            <span class="count">(0)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 가격 범위 필터 -->
+                <div class="filter-group">
+                    <h3 class="filter-title">가격 범위</h3>
+                    <div class="price-range-container">
+                        <label for="price-range" class="sr-only">가격 범위 선택</label>
+                        <input 
+                            type="range" 
+                            id="price-range" 
+                            min="0" 
+                            max="1000000" 
+                            step="10000" 
+                            value="1000000"
+                            aria-describedby="price-range-value"
+                        >
+                        <div class="price-range-labels">
+                            <span>₩0</span>
+                            <span id="price-range-value" aria-live="polite">₩1,000,000 이하</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 정렬 옵션 -->
+                <div class="filter-group">
+                    <h3 class="filter-title">정렬</h3>
+                    <select id="sort-select" aria-label="정렬 방식 선택">
+                        <option value="relevance">관련도순</option>
+                        <option value="price-low">가격 낮은순</option>
+                        <option value="price-high">가격 높은순</option>
+                        <option value="name">이름순</option>
+                        <option value="newest">최신순</option>
+                    </select>
+                </div>
+
+                <!-- 필터 초기화 -->
+                <button class="reset-filters-btn" type="button">
+                    필터 초기화
+                </button>
+            </div>
+        </aside>
+
+        <!-- 상품 섹션 -->
+        <section class="products-section">
+            <!-- 상품 헤더 -->
+            <header class="products-header">
+                <div class="products-info">
+                    <h2>상품 목록</h2>
+                    <p class="products-count" aria-live="polite">
+                        전체 <span id="total-products">0</span>개 상품
+                    </p>
+                </div>
+                
+                <!-- 뷰 모드 토글 -->
+                <div class="view-toggle" role="group" aria-label="상품 목록 보기 방식">
+                    <button class="view-btn active" data-view="grid" aria-pressed="true" aria-label="격자 보기">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                        </svg>
+                    </button>
+                    <button class="view-btn" data-view="list" aria-pressed="false" aria-label="목록 보기">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"/>
+                            <line x1="8" y1="12" x2="21" y2="12"/>
+                            <line x1="8" y1="18" x2="21" y2="18"/>
+                            <rect x="3" y="4" width="2" height="2"/>
+                            <rect x="3" y="10" width="2" height="2"/>
+                            <rect x="3" y="16" width="2" height="2"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- 상품 목록 -->
+            <div class="products-container">
+                <div class="product-grid" role="list" aria-label="상품 목록">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+                
+                <!-- 로딩 더 많은 상품 -->
+                <div class="load-more-container">
+                    <button class="load-more-btn" style="display: none;">
+                        더 많은 상품 보기
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 상품이 없을 때 -->
+            <div class="empty-state" style="display: none;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="8" y1="15" x2="16" y2="15"/>
+                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                </svg>
+                <h3>검색 결과가 없습니다</h3>
+                <p>다른 키워드로 검색해보시거나 필터를 조정해보세요.</p>
+                <button class="reset-search-btn">검색 초기화</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 장바구니 사이드바 -->
+    <aside 
+        id="shopping-cart" 
+        class="shopping-cart" 
+        role="dialog" 
+        aria-modal="true"
+        aria-labelledby="cart-title"
+        aria-hidden="true"
+    >
+        <header class="cart-header">
+            <h2 id="cart-title">장바구니</h2>
+            <button 
+                class="cart-close" 
+                aria-label="장바구니 닫기"
+                type="button"
+            >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </header>
+        
+        <div class="cart-content">
+            <div class="cart-items" role="list" aria-label="장바구니 상품 목록">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+            
+            <!-- 빈 장바구니 -->
+            <div class="empty-cart" style="display: none;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    <line x1="9" y1="9" x2="15" y2="15"/>
+                    <line x1="15" y1="9" x2="9" y2="15"/>
+                </svg>
+                <h3>장바구니가 비어있습니다</h3>
+                <p>상품을 담아보세요!</p>
+                <button class="continue-shopping-btn">쇼핑 계속하기</button>
+            </div>
+        </div>
+        
+        <footer class="cart-footer">
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>상품 수량:</span>
+                    <span id="cart-item-count" aria-live="polite">0개</span>
+                </div>
+                <div class="summary-row">
+                    <span>배송비:</span>
+                    <span id="shipping-cost">무료</span>
+                </div>
+                <div class="summary-row total">
+                    <span>총 결제금액:</span>
+                    <span id="cart-total" aria-live="polite">₩0</span>
+                </div>
+            </div>
+            
+            <div class="cart-actions">
+                <button class="checkout-btn" disabled>
+                    결제하기
+                </button>
+                <button class="clear-cart-btn" type="button">
+                    장바구니 비우기
+                </button>
+            </div>
+        </footer>
+    </aside>
+
+    <!-- 오버레이 -->
+    <div class="overlay" aria-hidden="true"></div>
+
+    <!-- 알림 시스템 -->
+    <div id="notifications" class="notifications" aria-live="polite" aria-atomic="true">
+        <!-- JavaScript로 동적 생성 -->
+    </div>
+
+    <!-- 상품 상세페이지 모달 -->
+    <div 
+        id="product-detail-modal" 
+        class="product-detail-modal" 
+        role="dialog" 
+        aria-modal="true"
+        aria-labelledby="product-detail-title"
+        aria-hidden="true"
+    >
+        <div class="product-detail-content">
+            <header class="product-detail-header">
+                <button 
+                    class="product-detail-close" 
+                    aria-label="상품 상세페이지 닫기"
+                    type="button"
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </header>
+            
+            <div class="product-detail-body">
+                <div class="product-detail-images">
+                    <div class="product-main-image-container">
+                        <img 
+                            id="product-main-image" 
+                            src="" 
+                            alt="" 
+                            class="product-main-image"
+                        />
+                    </div>
+                    <div class="product-thumbnail-list">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                </div>
+                
+                <div class="product-detail-info">
+                    <div class="product-detail-meta">
+                        <span class="product-category-badge"></span>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <!-- JavaScript로 동적 생성 -->
+                            </div>
+                            <span class="rating-count"></span>
+                        </div>
+                    </div>
+                    
+                    <h1 id="product-detail-title" class="product-detail-name"></h1>
+                    
+                    <div class="product-price-info">
+                        <div class="product-current-price"></div>
+                        <div class="product-original-price"></div>
+                        <div class="product-discount-badge"></div>
+                    </div>
+                    
+                    <div class="product-description-section">
+                        <h2>상품 설명</h2>
+                        <p class="product-detailed-description"></p>
+                    </div>
+                    
+                    <div class="product-specs-section">
+                        <h2>상품 사양</h2>
+                        <dl class="product-specs-list">
+                            <!-- JavaScript로 동적 생성 -->
+                        </dl>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <div class="quantity-selector">
+                            <label for="detail-quantity-input" class="quantity-label">수량</label>
+                            <div class="quantity-controls">
+                                <button 
+                                    class="quantity-btn" 
+                                    data-action="decrease"
+                                    aria-label="수량 감소"
+                                >-</button>
+                                <input 
+                                    type="number" 
+                                    id="detail-quantity-input"
+                                    class="quantity-input" 
+                                    value="1" 
+                                    min="1"
+                                    aria-label="수량"
+                                />
+                                <button 
+                                    class="quantity-btn" 
+                                    data-action="increase"
+                                    aria-label="수량 증가"
+                                >+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="add-to-cart-btn primary" data-product-id="">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="9" cy="21" r="1"/>
+                                    <circle cx="20" cy="21" r="1"/>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                                </svg>
+                                장바구니 담기
+                            </button>
+                            <button class="buy-now-btn">
+                                바로 구매
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2024 간단한 쇼핑몰. 백엔드 개발자를 위한 프론트엔드 템플릿.</p>
+            <p>
+                <a href="#" class="footer-link">개인정보처리방침</a> | 
+                <a href="#" class="footer-link">이용약관</a> | 
+                <a href="#" class="footer-link">고객센터</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="scripts/main.js"></script>
+    
+    <!-- Performance monitoring -->
+    <script>
+        // 간단한 성능 모니터링
+        window.addEventListener('load', () => {
+            const loadTime = performance.now();
+            console.log(`페이지 로딩 시간: ${Math.round(loadTime)}ms`);
+        });
+    </script>
+</body>
+</html>
